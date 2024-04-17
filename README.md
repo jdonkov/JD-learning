@@ -1,2 +1,2 @@
 # JD-learning
-Jordans learning deposityory 
+Jordans learning depository
