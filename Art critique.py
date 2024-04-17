@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 
 # Your OpenAI API key
-openai_api_key = "sk-proj-5YtuO0kdgcnr8BqL71MiT3BlbkFJD9NXOYAatr0akkNAdjFN"
+openai_api_key = ""
 
 st.title('🎨 AI Art Critique Assistant')
 st.markdown('Upload an image URL and provide a detailed description of the artwork for analysis.')
