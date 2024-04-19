@@ -1,6 +1,7 @@
+import openai
 import streamlit as st
 import os
-import openai
+
 
 # Set the API key for OpenAI from environment variables
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -44,4 +45,11 @@ if submit_button:
             st.error("No image data found in response.")
     except Exception as e:
         st.error(f"Failed to generate design: {str(e)}")
+
+
+
+
+
+
+
 
