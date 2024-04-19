@@ -1,9 +1,9 @@
 import streamlit as st
 import os
-from openai import OpenAI
+from openai import openai
 
 # Initialize OpenAI client
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = openai(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Step 2: Designing the UI Layout
 st.title('Merch AI Designer: Revolutionizing Merchandise Creation')
