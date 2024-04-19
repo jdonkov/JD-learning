@@ -2,38 +2,46 @@ import streamlit as st
 import os
 import openai
 
-# Initialize OpenAI client
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# Set the API key for OpenAI from environment variables
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# Step 2: Designing the UI Layout
+# Validate that the API key is available
+if not openai.api_key:
+    st.error("OPENAI_API_KEY environment variable not set")
+    st.stop()
+
+# Designing the UI Layout
 st.title('Merch AI Designer: Revolutionizing Merchandise Creation')
-
-# Step 3: Use Streamlit's sidebar for user input
 st.sidebar.header("Design Customization")
 
-# Step 4: User Inputs
+# User Inputs
 description_input = st.sidebar.text_input("Describe your merch design:", "")
 merch_type = st.sidebar.selectbox("Select Merchandise Type:",
                                   ['T-Shirt', 'Mug', 'Poster', 'Tote Bag',
                                    'Phone Case', 'Sticker', 'Pillow', 'Hoodie'])
 
-# Step 5: Submit Button
+# Submit Button
 submit_button = st.sidebar.button('Generate Design')
 
-# Step 6: Processing User Inputs
+# Processing User Inputs
 if submit_button:
-    # Generate Image using OpenAI API
-    response = client.images.generate(
-        prompt=description_input + " design on a " + merch_type,
-        model="dall-e-3",
-        size="1024x1024",
-        quality="hd",
-        n=1
-    )
+    try:
+        # Generate Image using OpenAI API
+        response = openai.images.generate(
+            model="dall-e-3",
+            prompt=description_input + " design on a " + merch_type,
+            size="1024x1024",
+            quality="hd",
+            n=1
+        )
 
-    # Accessing the image URL correctly:
-    image_url = response.data[0].url
-
-    # Display the image
-    st.image(image_url, caption=f'Your Custom {merch_type}')
+        # Check response structure and handle data extraction
+        if response.data and len(response.data) > 0:
+            image_url = response.data[0].url
+            # Display the image
+            st.image(image_url, caption=f'Your Custom {merch_type}')
+        else:
+            st.error("No image data found in response.")
+    except Exception as e:
+        st.error(f"Failed to generate design: {str(e)}")
 
