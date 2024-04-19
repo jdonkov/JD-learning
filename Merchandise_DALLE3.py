@@ -3,9 +3,10 @@ import streamlit as st
 from PIL import Image
 import requests
 from io import BytesIO
+import os  # Make sure to import os
 
-# Initialize OpenAI client
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# Setup API key directly from environment variables
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Step 2: Designing the UI Layout
 st.title('Merch AI Designer: Revolutionizing Merchandise Creation')
@@ -24,20 +25,24 @@ submit_button = st.sidebar.button('Generate Design')
 
 # Step 6: Processing User Inputs
 if submit_button:
-    # Generate Image using OpenAI API
-    response = client.images.generate(
-        prompt=description_input + " design on a " + merch_type,
-        model="dall-e-3",
-        size="1024x1024",
-        quality="hd",
-        n=1
-    )
+    try:
+        # Generate Image using OpenAI API
+        response = openai.Image.create(
+            model="dall-e-3",
+            prompt=description_input + " design on a " + merch_type,
+            size="1024x1024",
+            quality="hd",
+            n=1
+        )
 
-    # Accessing the image URL correctly:
-    image_url = response.data[0].url
+        # Accessing the image URL correctly:
+        image_url = response['data'][0]['url']  # Make sure the response handling is correct
 
-    # Display the image
-    st.image(image_url, caption=f'Your Custom {merch_type}')
+        # Display the image
+        st.image(image_url, caption=f'Your Custom {merch_type}')
+    except Exception as e:
+        st.error("Failed to generate design: " + str(e))
+
 
 
 
