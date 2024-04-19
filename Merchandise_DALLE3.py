@@ -1,6 +1,8 @@
+import openai
 import streamlit as st
-import os
-from openai import OpenAI, Image
+from PIL import Image
+import requests
+from io import BytesIO
 
 # Initialize OpenAI client
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
