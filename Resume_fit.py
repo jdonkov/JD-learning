@@ -1,5 +1,5 @@
 import streamlit as st
-from openai import OpenAI
+import openai
 import os
 
 # OpenAI API key
@@ -10,31 +10,34 @@ if not api_key:
     st.error("OpenAI API key is not set. Please set the OPENAI_API_KEY environment variable.")
     st.stop()
 
-client = OpenAI(api_key=api_key)
+client = openai.OpenAI(api_key=api_key)
 
-# Analyzer UI
-st.title('Elevate Your Job Search: Resume Analyzer 🔎📄')
-st.markdown('Optimize your resume for specific job descriptions. Get tailored insights into your skills, experience, and education alignment')
 
-# Start OPENAI API
-def compare_resume_to_job_description(resume_text, job_description_text):
-    client = OpenAI(api_key=api_key)
-    model = "gpt-3.5-turbo"
-
-    # Instructions for the AI
-    messages = [
-        {"role": "system",
-         "content": "You are an assistant who helps individuals identify gaps in their resumes based on job descriptions."},
-        {"role": "user",
-         "content": f"Compare the resume and the job description. Identify skill gaps and estimate how qualified the individual is for the job. Provide a detailed analysis including the qualification percentage.\n{resume_text, job_description_text}"}
-    ]
-
+def get_completion(prompt, model="gpt-3.5-turbo"):
+    messages = [{"role": "user", "content": prompt}]
     response = client.chat.completions.create(
         model=model,
         messages=messages,
         temperature=0
     )
     return response.choices[0].message.content
+
+
+# Analyzer UI
+st.title('Elevate Your Job Search: Resume Analyzer 🔎📄')
+st.markdown(
+    'Optimize your resume for specific job descriptions. Get tailored insights into your skills, experience, and education alignment')
+
+
+def compare_resume_to_job_description(resume_text, job_description_text):
+    # Frame the prompt for resume and job description comparison
+    prompt = f"Given a resume with the following details:\n{resume_text}\n\nAnd a job description as follows:\n{job_description_text}\n\nPlease analyze and compare the skill sets, qualifications, and experiences. Provide an estimate of the qualification match as a percentage."
+
+    # Use get_completion function to get the AI response
+    result = get_completion(prompt)
+
+    return result
+
 
 resume_text = st.text_area("Paste your resume here:", height=300)
 job_description_text = st.text_area("Paste the job description here:", height=300)
