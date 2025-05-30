@@ -2,7 +2,9 @@ ffmpeg
 build-essential
 portaudio19-dev
 libasound2-dev
-libsndfile1-dev 
+libsndfile1-dev
 libmpg123-dev
 libvorbis-dev
 libopus-dev
+python3-dev  # Add this
+python3.13-dev # Add this, matching your environment if possible
