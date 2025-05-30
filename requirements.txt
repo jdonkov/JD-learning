@@ -1,0 +1,4 @@
+openai
+newsapi-python
+pydub
+streamlit
