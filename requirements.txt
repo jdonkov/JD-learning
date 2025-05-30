@@ -2,3 +2,4 @@ openai
 newsapi-python
 pydub
 streamlit
+pyaudioop
