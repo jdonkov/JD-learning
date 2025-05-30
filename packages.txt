@@ -2,3 +2,7 @@ ffmpeg
 build-essential
 portaudio19-dev
 libasound2-dev
+libsndfile1-dev 
+libmpg123-dev
+libvorbis-dev
+libopus-dev
